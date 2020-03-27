@@ -10,10 +10,7 @@ const pool = new Pool({
 pool.connect();
 
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send(pool);
-});
+
 
 router.post('/user', function(req, res, next) {
   const {username, password} = req.body;
@@ -22,6 +19,7 @@ router.post('/user', function(req, res, next) {
     if (err) throw err;
     for (let row of res_db.rows) {
       id = row['id'];
+      //console.log(JSON.stringify(id));
       res.send(JSON.stringify(id))
     }
     if(id == -1)res.send(JSON.stringify(id))
