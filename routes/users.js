@@ -20,9 +20,9 @@ router.post('/user', function(req, res, next) {
     for (let row of res_db.rows) {
       id = row['id'];
       //console.log(JSON.stringify(id));
-      res.send(JSON.stringify(id))
+      res.send(JSON.stringify(id));
     }
-    if(id == -1)res.send(JSON.stringify(id))
+    if(id == -1)res.send(JSON.stringify(id));
   })
 });
 
@@ -30,7 +30,8 @@ router.post('/notes', function(req, res, next) {
   const {author} = req.body;
   pool.query('SELECT id, title FROM notes where author = $1;', [author], (err, res_db) => {
     if (err) throw err;
-    res.send("5");
+    //console.log(JSON.stringify(res_db.rows));
+    res.json(res_db.rows);
   })
 });
 
