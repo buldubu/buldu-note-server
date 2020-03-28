@@ -27,8 +27,8 @@ router.post('/user', function(req, res, next) {
 });
 
 router.post('/notes', function(req, res, next) {
-  const {id} = req.body;
-  pool.query('SELECT id, note, title FROM notes where author = $1;', [id], (err, res_db) => {
+  const {author} = req.body;
+  pool.query('SELECT id, note, title FROM notes where author = $1;', [author], (err, res_db) => {
     if (err) throw err;
     for (let row of res_db.rows) {
       title = row['title'];
