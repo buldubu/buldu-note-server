@@ -28,14 +28,9 @@ router.post('/user', function(req, res, next) {
 
 router.post('/notes', function(req, res, next) {
   const {author} = req.body;
-  pool.query('SELECT id, note, title FROM notes where author = $1;', [author], (err, res_db) => {
+  pool.query('SELECT id, title FROM notes where author = $1;', [author], (err, res_db) => {
     if (err) throw err;
-    for (let row of res_db.rows) {
-      title = row['title'];
-      //console.log(JSON.stringify(id));
-      res.send("True");
-    }
-    if(id == -1)res.send(JSON.stringify(id))
+    res.send(Json.stringify(res_db.rows))
   })
 });
 
