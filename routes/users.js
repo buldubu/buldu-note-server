@@ -30,7 +30,7 @@ router.post('/notes', function(req, res, next) {
   const {author} = req.body;
   pool.query('SELECT id, title FROM notes where author = $1;', [author], (err, res_db) => {
     if (err) throw err;
-    res.send(Json.stringify(res_db.rows))
+    res.send("5");
   })
 });
 
