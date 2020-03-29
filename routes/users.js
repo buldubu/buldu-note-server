@@ -42,7 +42,11 @@ router.post('/note', function(req, res, next) {
   pool.query('SELECT id, title, text FROM notes where id = $1;', [id], (err, res_db) => {
     if (err) throw err;
     //console.log(JSON.stringify(res_db.rows));
-    res.json(res_db.rows);
+    for (let row of res_db.rows) {
+      //console.log(JSON.stringify(id));
+      res.send(row);
+      return;
+    }
     return;
   })
 });
