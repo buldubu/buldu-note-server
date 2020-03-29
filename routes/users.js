@@ -21,9 +21,8 @@ router.post('/user', function(req, res, next) {
       id = row['id'];
       //console.log(JSON.stringify(id));
       res.send(JSON.stringify(id));
-      return;
     }
-    res.send(JSON.stringify(-1));
+    if(id == -1)res.send(JSON.stringify(id));
   })
 });
 
@@ -33,7 +32,6 @@ router.post('/titles', function(req, res, next) {
     if (err) throw err;
     //console.log(JSON.stringify(res_db.rows));
     res.json(res_db.rows);
-    return;
   })
 });
 
@@ -45,9 +43,7 @@ router.post('/note', function(req, res, next) {
     for (let row of res_db.rows) {
       //console.log(JSON.stringify(id));
       res.send(row);
-      return;
     }
-    return;
   })
 });
 
