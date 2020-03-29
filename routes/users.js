@@ -26,7 +26,7 @@ router.post('/user', function(req, res, next) {
   })
 });
 
-router.post('/notes', function(req, res, next) {
+router.post('/titles', function(req, res, next) {
   const {author} = req.body;
   pool.query('SELECT id, title FROM notes where author = $1;', [author], (err, res_db) => {
     if (err) throw err;
@@ -34,6 +34,9 @@ router.post('/notes', function(req, res, next) {
     res.json(res_db.rows);
   })
 });
+
+
+
 
 
 module.exports = router;
