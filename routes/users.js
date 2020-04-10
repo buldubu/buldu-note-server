@@ -66,8 +66,11 @@ router.post('/noteEdit', function(req, res, next) {
   const {id, title, note} = req.body;
   //console.log("edsd");
   pool.query('UPDATE notes SET title = $1, note = $2 WHERE id = $3;', [title, note, id], (err, res_db) => {
-    if (err) throw err;
-    //console.log(err, res);
+    if (err) console.log(err), res.send(JSON.stringify(err));
+    else{
+      console.log(res_db);
+      res.json(res_db.rows);
+    }
   })
 });
 
