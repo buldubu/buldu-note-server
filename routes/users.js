@@ -3,8 +3,8 @@ var router = express.Router();
 
 const { Pool } = require('pg');
 const pool = new Pool({
-  //connectionString: process.env.DATABASE_URL,
-  connectionString: "postgres://yfkpgdvcubwpqc:1660f925c79b2b18e82db076d82d21878468405b182641f778147c6aa845080a@ec2-46-137-84-173.eu-west-1.compute.amazonaws.com:5432/d74dbu5iqo08d0",
+  connectionString: process.env.DATABASE_URL,
+  //connectionString: "postgres://yfkpgdvcubwpqc:1660f925c79b2b18e82db076d82d21878468405b182641f778147c6aa845080a@ec2-46-137-84-173.eu-west-1.compute.amazonaws.com:5432/d74dbu5iqo08d0",
   ssl: true
 });
 
@@ -17,6 +17,20 @@ router.post('/user', function(req, res, next) {
   const {username, password} = req.body;
   var id = -1;
   pool.query('SELECT id FROM users WHERE username = $1 AND password = $2;', [username, password], (err, res_db) => {
+    if (err) throw err;
+    for (let row of res_db.rows) {
+      id = row['id'];
+      //console.log(JSON.stringify(id));
+      res.send(JSON.stringify(id));
+    }
+    if(id == -1)res.send(JSON.stringify(id));
+  })
+});
+
+router.post('/userName', function(req, res, next) {
+  const {username} = req.body;
+  var id = -1;
+  pool.query('SELECT id FROM users WHERE username = $1;', [username], (err, res_db) => {
     if (err) throw err;
     for (let row of res_db.rows) {
       id = row['id'];
@@ -71,13 +85,10 @@ router.post('/noteAdd', function(req, res, next) {
 router.post('/userAdd', function(req, res, next) {
   const {username, password} = req.body;
   var id = -1;
-  pool.query('INSERT INTO users(username, password)VALUES($1, $2) returning id;', [username, password], (err, res_db) => {
-    if (err) res.send(JSON.stringify(id));
-    for (let row of res_db.rows) {
-      id = row['id'];
-      //console.log(JSON.stringify(id));
-      res.send(JSON.stringify(id));
-    }
+  pool.query('INSERT INTO users(username, password)VALUES($1, $2) ON CONFLICT (username) DO UPDATE SET username = excluded.username RETURNING id;', [username, password], (err, res_db) => {
+    if (err) throw err;
+    id = res_db.rows[0]['id']
+    res.send(JSON.stringify(id));
   })
 });
 
