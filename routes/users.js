@@ -72,13 +72,12 @@ router.post('/userAdd', function(req, res, next) {
   const {username, password} = req.body;
   var id = -1;
   pool.query('INSERT INTO users(username, password)VALUES($1, $2) returning id;', [username, password], (err, res_db) => {
-    if (err) throw err;
+    if (err) res.send(JSON.stringify(id));
     for (let row of res_db.rows) {
       id = row['id'];
       //console.log(JSON.stringify(id));
       res.send(JSON.stringify(id));
     }
-    if(id == -1)res.send(JSON.stringify(id));
   })
 });
 
