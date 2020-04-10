@@ -98,10 +98,8 @@ router.post('/userAdd', function(req, res, next) {
 router.post('/noteDelete', function(req, res, next) {
   const {id} = req.body;
   pool.query('DELETE FROM notes WHERE id = $1;', [id], (err, res_db) => {
-    if (err) console.log(err);
-    else{
-      console.log(res_db);
-    }
+    if (err) throw err;
+    res.send("0");
   })
 });
 
